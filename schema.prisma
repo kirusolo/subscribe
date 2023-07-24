@@ -1,0 +1,24 @@
+// schema.prisma
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  customerId Int
+  planId     Int
+  startDate  DateTime
+  endDate    DateTime
+}
+
+model Plan {
+  id       Int     @id @default(autoincrement())
+  name     String
+  price    Float
+  duration String
+}

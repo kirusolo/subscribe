@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscription Plan</title>
+  </head>
+  <body>
+    <h1>Subscription Plan</h1>
+    <form id="subscriptionForm" action="/" method="POST">
+      <label for="customerId">Customer ID:</label>
+      <input type="text" id="customerId" name="customerId" required /><br />
+
+      <label for="planId">Plan ID:</label>
+      <input type="text" id="planId" name="planId" required /><br />
+
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" name="startDate" required /><br />
+
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" name="endDate" required /><br />
+
+      <button type="submit">Subscribe</button>
+    </form>
+
+    <h2>Subscriptions:</h2>
+    <div id="subscriptions"></div>
+
+    <script>
+      const subscriptionForm = document.getElementById("subscriptionForm");
+      const subscriptionsDiv = document.getElementById("subscriptions");
+
+      subscriptionForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(subscriptionForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch("/subscriptions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const newSubscription = await response.json();
+          console.log("New subscription:", newSubscription);
+
+          // Refresh the subscriptions list after adding a new subscription
+          fetchSubscriptions();
+        } catch (error) {
+          console.error("Error creating subscription:", error);
+        }
+      });
+
+      async function fetchSubscriptions() {
+        // ... (existing code for fetching and displaying subscriptions)
+      }
+
+      // Fetch and display subscriptions on page load
+      fetchSubscriptions();
+    </script>
+  </body>
+</html>
